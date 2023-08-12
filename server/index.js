@@ -1,31 +1,39 @@
-import express from "express";
-import helmet from "helmet";
-import morgan from "morgan";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-// import user from "./routes/user.js";
-// import auth from "./routes/auth.js";
-
+const express = require("express");
 const app = express();
-const port = 8000;
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const helmet = require("helmet");
+const morgan = require("morgan");
+const cors = require("cors");
+const userRoute = require("./routes/user-routes");
+const authRoute = require("./routes/auth-routes");
+const postRoute = require("./routes/post-routes");
 
 dotenv.config();
 
-mongoose.connect(process.env.MONGOD_URL, { useNewUrlParser: true }).then(() => {
-  console.log(`connected to MongoDB ${process.env.MONGOD_URL}`);
-});
+//DB Connection:--
+main().catch((err) => console.log(err));
 
-// middlewares
-app.use(express.json()); //bodyparser
-app.use(helmet());
-app.use(morgan("common"));
-// app.use("/user", user);
-// app.use("/auth", auth);
+async function main() {
+  await mongoose.connect(process.env.MONGO_URL).then(() => {
+    console.log("connected to mongo atlas");
+  });
+  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+}
 
-app.get("/", (req, res) => {
-  res.send("welcome to homepage");
-});
+//Middleware
+app.use(express.json()); // It parses incoming requests with JSON payloads and is based on body-parser.
+app.use(helmet()); // secure your Express.js apps by setting various HTTP headers
+app.use(morgan("common")); // res :  [29/May/2023:10:29:08 +0000] "GET /user HTTP/1.1" 200 23
+app.use(cors());
 
-app.listen(port, () => {
-  console.log(`App is running on port ${port}`);
+//routes
+
+// app.use('/social/user', user);
+app.use("/social/user", userRoute);
+app.use("/social/auth", authRoute);
+app.use("/social/post", postRoute);
+
+app.listen(8800, () => {
+  console.log("Server is running on port 8800");
 });

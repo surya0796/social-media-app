@@ -1,0 +1,28 @@
+.sidenav__container {
+    position: fixed;
+    left: 0;
+    top: 65px;
+    padding: 20px 55px;
+    height: 100%;
+}
+
+.nav__name {
+    text-decoration: unset;
+    color: Grey;
+    font-size: 20px;
+}
+
+.nav__links {
+    padding-block: 10px;
+}
+
+.post__btn {
+    margin-top: 15px;
+    background-color: #ff3b30;
+    padding: 0.6rem 2rem;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    align-self: flex-end;
+    cursor: pointer;
+}
